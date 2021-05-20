@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de alunos</title>
+</head>
+<body>
+	<h1>Lista de alunos cadastrados</h1>
+
+<table id="tblData" class="table table-bordered table-hover">
+    <thead class="thead-inverse">
+        <tr>
+        <th data-column-id="ID">
+             ID
+          </th>
+          <th data-column-id="Nome">
+             Nome
+          </th>
+          <th data-column-id="Horário Escolar">
+             Horário Escolar
+          </th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+        var Result = <%- JSON.stringify(result) %>;
+        var todas_listas = []
+        for (i = 0; i < Result.length; i++) {
+              todas_listas.push([Result[i].id, Result[i].nome, Result[i].horario_escolar])
+              document.write([Result[i].id + ' ' + Result[i].nome + ' ' + Result[i].horario_escolar] + '<br>')
+            }
+        var TableData = null;
+        $(function () {
+            function ajusTables() {
+
+                $('.table').css('width', '100%');
+                $('.dataTables_scrollHeadInner').css('width', '100%');
+            }
+
+            TableData = $('#tblData').DataTable({
+                "serverSide": false,
+                "drawCallback": function (settings) {
+                    ajusTables();
+                },
+                "scrollX": true,
+                "processing": true,
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "deferRender": true,
+                "columns": [
+                    { "data": "ID" },
+                    { "data": "Nome" },
+                    { "data": "Horário Escolar" },
+                ]
+            });
+            TableData.rows.add(todas_listas)
+            TableData.draw();
+        });
+    </script>
+
+
+	<section class='home'>
+
+    <hr>
+    <h1>Cadastrar</h1>
+
+    <form name="formaluno" id="formaluno" method="post">
+        <br>
+        <label for="nome_aluno">Nome Completo:</label><br>
+        <input type="text" name="nome" id="nome"><br>
+        <label for="horario_escolar">Horário Escolar:</label><br>
+        <input type="text" name="horario_escolar" id="horario_escolar"><br>
+        <br>
+        <input type="submit" value="Cadastrar">
+    </form>
+    
+</body>
+</html>
